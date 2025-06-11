@@ -113,17 +113,16 @@ const Header: React.FC = () => {
       icon: Home
     },
     { 
-      name: 'Products', 
-      path: '/products',
+      name: 'Categories', 
+      path: '/categories',
       icon: Package,
       dropdown: [
-        { name: 'Staple Foods', icon: '🍚', path: '/products?category=staple-foods' },
-        { name: 'Beverages', icon: '🥤', path: '/products?category=beverages' },
-        { name: 'Snacks & Namkeen', icon: '🥨', path: '/products?category=snacks' },
-        { name: 'Dairy', icon: '🥛', path: '/products?category=dairy' },
-        { name: 'Household & Cleaning', icon: '🧽', path: '/products?category=household' },
-        { name: 'Personal Care & Health', icon: '🧴', path: '/products?category=personal-care' },
-        { name: 'Stationery', icon: '📝', path: '/products?category=stationery' }
+        { name: 'Staple Foods', icon: '🌾', path: '/categories?category=staple-foods' },
+        { name: 'Beverages', icon: '🥤', path: '/categories?category=beverages' },
+        { name: 'Snacks & Namkeen', icon: '🍿', path: '/categories?category=snacks' },
+        { name: 'Dairy & Eggs', icon: '🥛', path: '/categories?category=dairy' },
+        { name: 'Household & Cleaning', icon: '🧽', path: '/categories?category=household' },
+        { name: 'Personal Care & Health', icon: '🧴', path: '/categories?category=personal-care' }
       ]
     },
     { 

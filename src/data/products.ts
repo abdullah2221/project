@@ -13,62 +13,191 @@ export interface Product {
 }
 
 export interface Category {
+  id: number;
   name: string;
   image: string;
-  count: string;
   description: string;
   icon: string;
   color: string;
+  whatsappMessage: string;
+  contactInfo: {
+    phone: string;
+    whatsapp: string;
+    businessHours: string;
+    location: string;
+  };
+  popularItems: string[];
+  services: string[];
 }
 
 export const categories: Category[] = [
   {
-    name: "Fresh Produce",
-    image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&h=300&fit=crop",
-    count: "200+ items",
-    description: "Fresh fruits, vegetables & herbs",
-    icon: "🥬",
-    color: "from-green-500 to-emerald-600"
-  },
-  {
+    id: 1,
     name: "Staple Foods",
     image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&h=300&fit=crop",
-    count: "300+ items",
-    description: "Rice, lentils, pasta & oils",
+    description: "Rice, lentils, pasta & cooking essentials",
     icon: "🌾",
-    color: "from-amber-500 to-orange-600"
+    color: "from-amber-500 to-orange-600",
+    whatsappMessage: "Hi! I'm interested in staple foods like rice, lentils, pasta, and cooking essentials. Can you tell me about your current stock and prices?",
+    contactInfo: {
+      phone: "+92 331 7590842",
+      whatsapp: "+92 331 7590842",
+      businessHours: "Mon-Thu, Sat-Sun: 6 AM-10 AM and 2 PM-10 PM; Friday: 6 AM-10 PM",
+      location: "Chak No 297 JB, Gojra, Pakistan"
+    },
+    popularItems: [
+      "Basmati Rice",
+      "Red Lentils",
+      "Spaghetti Pasta",
+      "Olive Oil",
+      "Mixed Spices",
+      "Whole Wheat Flour"
+    ],
+    services: [
+      "Bulk orders available",
+      "Home delivery",
+      "Quality guarantee",
+      "Fresh stock daily"
+    ]
   },
   {
+    id: 2,
     name: "Beverages",
-    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500&h=300&fit=crop",
-    count: "150+ items",
-    description: "Water, juices & soft drinks",
+    image: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=500&h=300&fit=crop",
+    description: "Water, juices, tea & soft drinks",
     icon: "🥤",
-    color: "from-blue-500 to-cyan-600"
+    color: "from-blue-500 to-cyan-600",
+    whatsappMessage: "Hi! I need beverages including water, juices, tea, and soft drinks. What brands do you have in stock?",
+    contactInfo: {
+      phone: "+92 331 7590842",
+      whatsapp: "+92 331 7590842",
+      businessHours: "Mon-Thu, Sat-Sun: 6 AM-10 AM and 2 PM-10 PM; Friday: 6 AM-10 PM",
+      location: "Chak No 297 JB, Gojra, Pakistan"
+    },
+    popularItems: [
+      "Mineral Water",
+      "Fresh Orange Juice",
+      "Green Tea",
+      "Cola Soft Drinks",
+      "Energy Drinks",
+      "Fresh Milk"
+    ],
+    services: [
+      "Cold beverages available",
+      "Bulk pack discounts",
+      "Party supplies",
+      "Regular delivery"
+    ]
   },
   {
-    name: "Snacks & Treats",
+    id: 3,
+    name: "Snacks & Namkeen",
     image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=500&h=300&fit=crop",
-    count: "100+ items",
-    description: "Traditional snacks & treats",
+    description: "Traditional snacks & packaged treats",
     icon: "🍿",
-    color: "from-yellow-500 to-orange-500"
+    color: "from-yellow-500 to-orange-500",
+    whatsappMessage: "Hi! I'm interested in snacks and namkeen. Can you tell me about your available options and prices?",
+    contactInfo: {
+      phone: "+92 331 7590842",
+      whatsapp: "+92 331 7590842",
+      businessHours: "Mon-Thu, Sat-Sun: 6 AM-10 AM and 2 PM-10 PM; Friday: 6 AM-10 PM",
+      location: "Chak No 297 JB, Gojra, Pakistan"
+    },
+    popularItems: [
+      "Mixed Namkeen",
+      "Potato Chips",
+      "Roasted Peanuts",
+      "Assorted Biscuits"
+    ],
+    services: [
+      "Fresh snacks daily",
+      "Party packs",
+      "Special discounts",
+      "Home delivery"
+    ]
   },
   {
+    id: 4,
     name: "Dairy & Eggs",
-    image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=500&h=300&fit=crop",
-    count: "80+ items",
-    description: "Fresh milk, cheese & eggs",
+    image: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=500&h=300&fit=crop",
+    description: "Milk, cheese, yogurt & eggs",
     icon: "🥛",
-    color: "from-white to-gray-100"
+    color: "from-white to-gray-100",
+    whatsappMessage: "Hi! I'm interested in dairy and eggs. Can you tell me about your available products and prices?",
+    contactInfo: {
+      phone: "+92 331 7590842",
+      whatsapp: "+92 331 7590842",
+      businessHours: "Mon-Thu, Sat-Sun: 6 AM-10 AM and 2 PM-10 PM; Friday: 6 AM-10 PM",
+      location: "Chak No 297 JB, Gojra, Pakistan"
+    },
+    popularItems: [
+      "Fresh Milk",
+      "Cheddar Cheese",
+      "Fresh Eggs",
+      "Natural Yogurt"
+    ],
+    services: [
+      "Daily fresh stock",
+      "Quality guarantee",
+      "Bulk orders",
+      "Home delivery"
+    ]
   },
   {
-    name: "Household Care",
+    id: 5,
+    name: "Household & Cleaning",
     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&h=300&fit=crop",
-    count: "120+ items",
-    description: "Cleaning & household essentials",
+    description: "Cleaning supplies & household essentials",
     icon: "🧽",
-    color: "from-indigo-500 to-purple-600"
+    color: "from-indigo-500 to-purple-600",
+    whatsappMessage: "Hi! I need household and cleaning supplies. Can you tell me about your available products and offers?",
+    contactInfo: {
+      phone: "+92 331 7590842",
+      whatsapp: "+92 331 7590842",
+      businessHours: "Mon-Thu, Sat-Sun: 6 AM-10 AM and 2 PM-10 PM; Friday: 6 AM-10 PM",
+      location: "Chak No 297 JB, Gojra, Pakistan"
+    },
+    popularItems: [
+      "Laundry Detergent",
+      "Dish Soap",
+      "Toilet Paper",
+      "Paper Towels",
+      "Broom & Dustpan"
+    ],
+    services: [
+      "Bulk packs",
+      "Special offers",
+      "Home delivery",
+      "Quality guarantee"
+    ]
+  },
+  {
+    id: 6,
+    name: "Personal Care & Health",
+    image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=500&h=300&fit=crop",
+    description: "Hygiene products & health essentials",
+    icon: "🧴",
+    color: "from-green-500 to-emerald-600",
+    whatsappMessage: "Hi! I'm interested in personal care and health products. Can you tell me about your available items and prices?",
+    contactInfo: {
+      phone: "+92 331 7590842",
+      whatsapp: "+92 331 7590842",
+      businessHours: "Mon-Thu, Sat-Sun: 6 AM-10 AM and 2 PM-10 PM; Friday: 6 AM-10 PM",
+      location: "Chak No 297 JB, Gojra, Pakistan"
+    },
+    popularItems: [
+      "Anti-Dandruff Shampoo",
+      "Body Wash",
+      "Hand Soap",
+      "Toothpaste",
+      "Face Cream"
+    ],
+    services: [
+      "Quality brands",
+      "Bulk discounts",
+      "Home delivery",
+      "Special offers"
+    ]
   }
 ];
 
@@ -265,7 +394,7 @@ export const products: Product[] = [
   {
     id: 15,
     name: "Fresh Milk Full Cream",
-    category: "Dairy",
+    category: "Dairy & Eggs",
     image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&h=300&fit=crop",
     rating: 4.8,
     reviews: 189,
@@ -278,7 +407,7 @@ export const products: Product[] = [
   {
     id: 16,
     name: "Cheddar Cheese Block",
-    category: "Dairy",
+    category: "Dairy & Eggs",
     image: "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=300&fit=crop",
     rating: 4.7,
     reviews: 76,
@@ -291,7 +420,7 @@ export const products: Product[] = [
   {
     id: 17,
     name: "Fresh Eggs (Dozen)",
-    category: "Dairy",
+    category: "Dairy & Eggs",
     image: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=400&h=300&fit=crop",
     rating: 4.6,
     reviews: 145,
@@ -304,7 +433,7 @@ export const products: Product[] = [
   {
     id: 18,
     name: "Natural Yogurt",
-    category: "Dairy",
+    category: "Dairy & Eggs",
     image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=300&fit=crop",
     rating: 4.5,
     reviews: 67,
@@ -315,11 +444,11 @@ export const products: Product[] = [
     originalPrice: "PKR 140/500g"
   },
 
-  // HouseCare
+  // Household & Cleaning
   {
     id: 19,
     name: "Laundry Detergent",
-    category: "HouseCare",
+    category: "Household & Cleaning",
     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
     rating: 4.6,
     reviews: 123,
@@ -332,7 +461,7 @@ export const products: Product[] = [
   {
     id: 20,
     name: "Lemon Dish Soap",
-    category: "HouseCare",
+    category: "Household & Cleaning",
     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
     rating: 4.5,
     reviews: 89,
@@ -345,7 +474,7 @@ export const products: Product[] = [
   {
     id: 21,
     name: "Toilet Paper (12 Pack)",
-    category: "HouseCare",
+    category: "Household & Cleaning",
     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
     rating: 4.4,
     reviews: 167,
@@ -358,7 +487,7 @@ export const products: Product[] = [
   {
     id: 22,
     name: "Paper Towels (6 Pack)",
-    category: "HouseCare",
+    category: "Household & Cleaning",
     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
     rating: 4.5,
     reviews: 98,
@@ -371,7 +500,7 @@ export const products: Product[] = [
   {
     id: 23,
     name: "Broom & Dustpan Set",
-    category: "HouseCare",
+    category: "Household & Cleaning",
     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop",
     rating: 4.7,
     reviews: 56,
@@ -386,7 +515,7 @@ export const products: Product[] = [
   {
     id: 24,
     name: "Anti-Dandruff Shampoo",
-    category: "Health & Care",
+    category: "Personal Care & Health",
     image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=300&fit=crop",
     rating: 4.6,
     reviews: 134,
@@ -399,7 +528,7 @@ export const products: Product[] = [
   {
     id: 25,
     name: "Lavender Body Wash",
-    category: "Health & Care",
+    category: "Personal Care & Health",
     image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=300&fit=crop",
     rating: 4.5,
     reviews: 87,
@@ -412,7 +541,7 @@ export const products: Product[] = [
   {
     id: 26,
     name: "Hand Soap Refill",
-    category: "Health & Care",
+    category: "Personal Care & Health",
     image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=300&fit=crop",
     rating: 4.4,
     reviews: 112,
@@ -425,7 +554,7 @@ export const products: Product[] = [
   {
     id: 27,
     name: "Fresh Mint Toothpaste",
-    category: "Health & Care",
+    category: "Personal Care & Health",
     image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=300&fit=crop",
     rating: 4.7,
     reviews: 189,
@@ -438,7 +567,7 @@ export const products: Product[] = [
   {
     id: 28,
     name: "Moisturizing Face Cream",
-    category: "Health & Care",
+    category: "Personal Care & Health",
     image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&h=300&fit=crop",
     rating: 4.8,
     reviews: 76,

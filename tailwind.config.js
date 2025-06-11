@@ -52,6 +52,7 @@ export default {
         'bounce-subtle': 'bounceSubtle 2s infinite',
         'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
         'float': 'float 3s ease-in-out infinite',
+        'spin-slow': 'spin 20s linear infinite',
       },
       keyframes: {
         fadeIn: {
