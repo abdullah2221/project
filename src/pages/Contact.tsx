@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Clock, ChevronDown, ChevronUp, MessageCircle, ArrowRight, Sparkles, CheckCircle, Star, Truck } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { EMAILJS_CONFIG, getContactFormParams } from '../config/emailjs';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +14,27 @@ const Contact: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [showToast, setShowToast] = useState(false);
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+  }, []);
+
+  // Show toast notification
+  useEffect(() => {
+    if (submitStatus === 'success') {
+      setShowToast(true);
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 10000); // 10 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [submitStatus]);
+
+  const handleCloseToast = () => {
+    setShowToast(false);
+  };
 
   const faqs = [
     {
@@ -55,24 +78,42 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus('idle');
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Get template parameters using the helper function
+      const templateParams = getContactFormParams(formData);
+
+      // Send email using EmailJS
+      const response = await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATES.CONTACT_FORM,
+        templateParams
+      );
+
+      if (response.status === 200) {
+        setSubmitStatus('success');
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        });
+        
+        // Reset success message after 10 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 10000); // 10 seconds
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Email sending failed:', error);
+      setSubmitStatus('error');
+    } finally {
       setIsSubmitting(false);
-      setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-      });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setSubmitStatus('idle');
-      }, 5000);
-    }, 1500);
+    }
   };
 
   const toggleFAQ = (index: number) => {
@@ -94,7 +135,8 @@ const Contact: React.FC = () => {
       link: "https://www.google.com/maps/place/H.A+Super+Store/data=!4m2!3m1!1s0x0:0x358b93f9d2b23705?sa=X&ved=1t:2428&ictx=111",
       description: "Come visit us in person",
       color: "from-orange-500 to-orange-600",
-      featured: false
+      featured: false,
+      external: true
     },
     {
       icon: <Phone className="w-6 h-6" />,
@@ -103,7 +145,8 @@ const Contact: React.FC = () => {
       link: "tel:+923317590842",
       description: "Speak with our team directly",
       color: "from-blue-500 to-blue-600",
-      featured: false
+      featured: false,
+      external: false
     },
     {
       icon: <Mail className="w-6 h-6" />,
@@ -112,7 +155,8 @@ const Contact: React.FC = () => {
       link: "mailto:raza7590842@gmail.com",
       description: "Send us a detailed message",
       color: "from-purple-500 to-purple-600",
-      featured: false
+      featured: false,
+      external: false
     },
     {
       icon: <MessageCircle className="w-6 h-6" />,
@@ -121,7 +165,8 @@ const Contact: React.FC = () => {
       link: "https://wa.me/923317590842",
       description: "Quick responses guaranteed",
       color: "from-green-500 to-green-600",
-      featured: true
+      featured: true,
+      external: true
     },
     {
       icon: <Truck className="w-6 h-6" />,
@@ -130,60 +175,85 @@ const Contact: React.FC = () => {
       link: "#",
       description: "Available in hometown & Gojra",
       color: "from-cyan-500 to-cyan-600",
-      featured: false
+      featured: false,
+      external: false
     }
   ];
 
   return (
     <div className="pt-1">
-      {/* Enhanced Hero Section */}
-      <section className="relative h-96 bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white overflow-hidden">
+      {/* Toast Notification */}
+      {showToast && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-in slide-in-from-top-2 duration-500">
+          <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl border border-green-400 relative">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="font-bold text-sm">Message Sent Successfully!</p>
+                <p className="text-xs opacity-90">We'll get back to you soon.</p>
+              </div>
+            </div>
+            {/* Close Button */}
+            <button
+              onClick={handleCloseToast}
+              className="absolute top-2 right-2 w-6 h-6 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+            >
+              <span className="text-white text-sm font-bold">×</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Enhanced Hero Section - Mobile First */}
+      <section className="relative h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0 bg-black/10" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-48 translate-x-48 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full translate-y-48 -translate-x-48 blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-white/5 rounded-full -translate-y-24 sm:-translate-y-48 translate-x-24 sm:translate-x-48 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-48 sm:w-96 h-48 sm:h-96 bg-white/5 rounded-full translate-y-24 sm:translate-y-48 -translate-x-24 sm:-translate-x-48 blur-3xl"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-6 border border-white/20">
-              <MessageCircle className="w-4 h-4 mr-2" />
+          <div className="max-w-3xl sm:max-w-4xl">
+            <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 border border-white/20">
+              <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
               Get In Touch
             </div>
-            <h1 className="font-heading font-bold text-4xl sm:text-5xl lg:text-6xl mb-6 leading-tight">
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-6 leading-tight">
               Contact Us
             </h1>
-            <p className="text-xl sm:text-2xl text-gray-200 leading-relaxed max-w-3xl">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed max-w-2xl sm:max-w-3xl">
               We'd love to hear from you. Contact us for any questions, product inquiries, or feedback. Our team is here to help!
             </p>
           </div>
         </div>
       </section>
 
-      {/* Contact Methods Grid */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+      {/* Contact Methods Grid - Mobile First */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
         {/* Background Elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-200/10 rounded-full -translate-y-48 translate-x-48 blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/10 rounded-full translate-y-48 -translate-x-48 blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary-500/5 to-blue-500/5 rounded-full blur-3xl animate-spin-slow"></div>
+        <div className="absolute top-0 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-primary-200/10 rounded-full -translate-y-24 sm:-translate-y-48 translate-x-24 sm:translate-x-48 blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-48 sm:w-96 h-48 sm:h-96 bg-blue-200/10 rounded-full translate-y-24 sm:translate-y-48 -translate-x-24 sm:-translate-x-48 blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[800px] h-[600px] sm:h-[800px] bg-gradient-to-r from-primary-500/5 to-blue-500/5 rounded-full blur-3xl animate-spin-slow"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-primary-100 to-primary-200 rounded-3xl mb-8 group">
-              <MessageCircle className="w-12 h-12 text-primary-600 group-hover:scale-110 transition-transform duration-300" />
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl sm:rounded-3xl mb-6 sm:mb-8 group">
+              <MessageCircle className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-primary-600 group-hover:scale-110 transition-transform duration-300" />
             </div>
-            <h2 className="font-heading font-bold text-4xl sm:text-5xl lg:text-6xl text-gray-900 mb-6">
+            <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-4 sm:mb-6">
               Multiple Ways to Reach Us
               </h2>
-            <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed">
               Choose the most convenient way to get in touch with our dedicated team. We're here to help you 24/7.
             </p>
           </div>
           
-          {/* Modern Card Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {/* Modern Card Layout - Mobile First Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12 sm:mb-16">
             {contactMethods.map((method, index) => (
-              <div key={index} className={`group ${method.featured ? 'lg:col-span-1 md:col-span-2 lg:col-span-1' : ''}`}>
-                <div className={`relative rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-700 border border-gray-100 hover:-translate-y-4 overflow-hidden h-full ${
+              <div key={index} className={`group ${method.featured ? 'sm:col-span-2 lg:col-span-1' : ''}`}>
+                <div className={`relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-700 border border-gray-100 hover:-translate-y-2 sm:hover:-translate-y-4 overflow-hidden h-full ${
                   method.featured 
                     ? 'bg-gradient-to-br from-green-500 to-green-600 text-white' 
                     : 'bg-white'
@@ -197,97 +267,65 @@ const Contact: React.FC = () => {
                   {method.featured && (
                     <>
                       <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+                      <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-white/10 rounded-full -translate-y-12 translate-x-12 sm:-translate-y-16 sm:translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+                      <div className="absolute bottom-0 left-0 w-20 h-20 sm:w-24 sm:h-24 bg-white/10 rounded-full translate-y-10 -translate-x-10 sm:translate-y-16 sm:-translate-x-16 group-hover:scale-150 transition-transform duration-700" style={{ animationDelay: '0.3s' }}></div>
                     </>
                   )}
                   
-                  {/* Icon Container */}
-                  <div className={`relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg group-hover:shadow-xl ${
-                    method.featured 
-                      ? 'bg-white/20 backdrop-blur-sm text-white' 
-                      : `bg-gradient-to-r ${method.color} text-white`
-                  }`}>
-                    {method.icon}
-                    {/* Glow Effect */}
-                    <div className={`absolute inset-0 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 ${
-                      method.featured ? 'bg-white' : `bg-gradient-to-r ${method.color}`
-                    }`}></div>
+                  {/* Icon */}
+                  <div className="relative mb-4 sm:mb-6">
+                    <div className={`inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${method.color} text-white rounded-xl sm:rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-6`}>
+                      {method.icon}
+                    </div>
                   </div>
                   
                   {/* Content */}
-                  <div className="relative">
-                    <h3 className={`font-heading font-bold text-xl mb-3 transition-colors ${
-                      method.featured ? 'text-white' : 'text-gray-900 group-hover:text-gray-800'
-                    }`}>
+                  <div className="relative z-10">
+                    <h3 className="font-heading font-bold text-lg sm:text-xl mb-2 sm:mb-3 text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-indigo-600 group-hover:bg-clip-text transition-all duration-700">
                       {method.title}
                     </h3>
-                    <p className={`mb-4 text-sm leading-relaxed transition-colors ${
-                      method.featured ? 'text-green-100' : 'text-gray-600 group-hover:text-gray-700'
-                    }`}>
+                    <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base leading-relaxed">
                       {method.description}
                     </p>
                     
                     {/* Contact Value */}
-                    <div className="mb-4">
-                      {method.link ? (
-                        <a 
-                          href={method.link}
-                          target={method.link.includes('wa.me') || method.link.includes('maps') ? "_blank" : undefined}
-                          rel={method.link.includes('wa.me') || method.link.includes('maps') ? "noopener noreferrer" : undefined}
-                          className={`inline-flex items-center text-lg font-bold transition-all duration-300 group/link ${
-                            method.featured 
-                              ? 'bg-white text-green-600 px-6 py-3 rounded-xl hover:scale-105 hover:shadow-xl' 
-                              : 'text-gray-900 hover:text-primary-600'
-                          }`}
-                        >
-                          <span className={method.featured ? '' : 'group-hover/link:underline'}>{method.value}</span>
-                          <ArrowRight className="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform duration-300" />
-                        </a>
-                      ) : (
-                        <p className={`text-lg font-bold ${
-                          method.featured ? 'text-white' : 'text-gray-900'
-                        }`}>
-                          {method.value}
-                        </p>
-                      )}
-                </div>
-
-                    {/* Special Badge for WhatsApp */}
-                    {method.title === "WhatsApp" && (
-                      <div className="inline-flex items-center px-3 py-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/30">
-                        <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
-                        Instant Response
-                      </div>
-                    )}
-                    
-                    {/* Special Badge for Delivery */}
-                    {method.title === "Home Delivery" && (
-                      <div className="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full border border-blue-200">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                        Rs. 200 Only
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Hover Border Effect */}
-                  <div className={`absolute inset-0 rounded-3xl border-2 border-transparent transition-colors duration-500 pointer-events-none ${
-                    method.featured ? 'group-hover:border-white/30' : 'group-hover:border-primary-200'
-                  }`}></div>
-                  
-                  {/* Floating Particles */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <div className={`w-2 h-2 rounded-full animate-ping ${
-                      method.featured ? 'bg-white' : 'bg-primary-400'
-                    }`}></div>
-                  </div>
-                  
-                  {/* Status Badge for Featured */}
-                  {method.featured && (
-                    <div className="absolute top-6 right-6 flex items-center px-3 py-1.5 bg-white/20 backdrop-blur-sm text-white text-xs font-semibold rounded-full">
-                      <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
-                      Live
+                    <div className="mb-4 sm:mb-6">
+                      <a
+                        href={method.link}
+                        target={method.external ? "_blank" : "_self"}
+                        rel={method.external ? "noopener noreferrer" : ""}
+                        className="inline-flex items-center space-x-2 text-lg sm:text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300"
+                      >
+                        <span>{method.value}</span>
+                        {method.external && (
+                          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                        )}
+                      </a>
                     </div>
-                  )}
+                    
+                    {/* Action Button */}
+                    <div className="flex space-x-2">
+                      <a
+                        href={method.link}
+                        target={method.external ? "_blank" : "_self"}
+                        rel={method.external ? "noopener noreferrer" : ""}
+                        className={`flex-1 inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${
+                          method.featured
+                            ? 'bg-white text-green-600 hover:bg-gray-100 shadow-lg hover:shadow-xl transform hover:scale-105'
+                            : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transform hover:scale-105'
+                        }`}
+                      >
+                        {method.featured ? 'Chat Now' : 'Contact'}
+                        <ArrowRight className="ml-2 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                    </div>
+                  </div>
+                  
+                  {/* Hover effect overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/8 via-indigo-500/8 to-purple-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl sm:rounded-3xl"></div>
+                  
+                  {/* Border glow effect */}
+                  <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl"></div>
                 </div>
               </div>
             ))}
@@ -418,11 +456,59 @@ const Contact: React.FC = () => {
               </div>
               
               {submitStatus === 'success' && (
-                <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2" />
-                  <div>
-                  <p className="font-medium">Thank you for your message!</p>
-                  <p className="text-sm">We'll get back to you within 24 hours.</p>
+                <div className="mb-6 p-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl shadow-lg animate-in slide-in-from-top-2 duration-500">
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                        <CheckCircle className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-green-800 mb-2 animate-in fade-in duration-700">
+                        🎉 Message Sent Successfully!
+                      </h3>
+                      <p className="text-green-700 mb-3 animate-in fade-in duration-700 delay-200">
+                        Thank you for contacting HA Super Store. We've received your message and will get back to you within 24 hours.
+                      </p>
+                      <div className="bg-white/60 rounded-lg p-4 border border-green-200 animate-in fade-in duration-700 delay-300">
+                        <p className="text-sm text-green-600 font-medium">
+                          📧 Check your email for a confirmation copy
+                        </p>
+                        <p className="text-xs text-green-500 mt-1">
+                          For immediate assistance, call us at +92 331 7590842
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-6 bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-2xl shadow-lg animate-in slide-in-from-top-2 duration-500">
+                  <div className="flex items-start space-x-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                        <div className="w-6 h-6 text-white font-bold text-lg">!</div>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-red-800 mb-2 animate-in fade-in duration-700">
+                        ⚠️ Message Could Not Be Sent
+                      </h3>
+                      <p className="text-red-700 mb-3 animate-in fade-in duration-700 delay-200">
+                        We're sorry, but there was an issue sending your message. Please try again or contact us directly.
+                      </p>
+                      <div className="bg-white/60 rounded-lg p-4 border border-red-200 animate-in fade-in duration-700 delay-300">
+                        <p className="text-sm text-red-600 font-medium">
+                          📞 Alternative Contact Methods:
+                        </p>
+                        <div className="mt-2 space-y-1">
+                          <p className="text-xs text-red-500">• Phone: +92 331 7590842</p>
+                          <p className="text-xs text-red-500">• WhatsApp: +92 331 7590842</p>
+                          <p className="text-xs text-red-500">• Email: raza7590842@gmail.com</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

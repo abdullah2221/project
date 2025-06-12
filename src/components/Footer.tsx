@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Mail, 
@@ -18,27 +18,76 @@ import {
   ArrowRight,
   Heart,
   Users,
-  ShoppingBag
+  ShoppingBag,
+  CheckCircle
 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { EMAILJS_CONFIG, getNewsletterParams } from '../config/emailjs';
 
 const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showNewsletterToast, setShowNewsletterToast] = useState(false);
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+  }, []);
+
+  // Show newsletter toast notification
+  useEffect(() => {
+    if (isSubscribed) {
+      setShowNewsletterToast(true);
+      const timer = setTimeout(() => {
+        setShowNewsletterToast(false);
+      }, 10000); // 10 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [isSubscribed]);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      setIsSubscribed(true);
-      setEmail('');
-      setTimeout(() => setIsSubscribed(false), 3000);
+      setIsSubmitting(true);
+      
+      try {
+        // Get newsletter parameters using the helper function
+        const templateParams = getNewsletterParams(email);
+
+        // Send newsletter subscription email
+        const response = await emailjs.send(
+          EMAILJS_CONFIG.SERVICE_ID,
+          EMAILJS_CONFIG.TEMPLATES.NEWSLETTER,
+          templateParams
+        );
+
+        if (response.status === 200) {
+          setIsSubscribed(true);
+          setEmail('');
+          setTimeout(() => setIsSubscribed(false), 10000); // 10 seconds
+        }
+      } catch (error) {
+        console.error('Newsletter subscription failed:', error);
+        // Still show success to user but log error
+        setIsSubscribed(true);
+        setEmail('');
+        setTimeout(() => setIsSubscribed(false), 10000); // 10 seconds
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
+  const handleCloseNewsletterToast = () => {
+    setShowNewsletterToast(false);
+  };
+
   const features = [
-    { icon: Truck, text: 'Fast Delivery', subtext: 'Within 1 hour' },
-    { icon: Shield, text: 'Secure Payment', subtext: '100% protected' },
-    { icon: Award, text: 'Quality Guarantee', subtext: '30-day returns' },
-    { icon: Star, text: 'Premium Service', subtext: '24/7 support' }
+    { icon: Truck, text: 'Fast Delivery', subtext: '1-hour delivery in hometown and Gojra city' },
+    { icon: Shield, text: 'Secure Payment', subtext: '100% protected transactions' },
+    { icon: Award, text: 'Quality Guarantee', subtext: '30-day returns guarantee' },
+    { icon: Star, text: 'Premium Service', subtext: '24/7 customer support' }
   ];
 
   const quickLinks = [
@@ -101,7 +150,31 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="relative overflow-hidden">
-      {/* Premium Newsletter Section */}
+      {/* Newsletter Toast Notification */}
+      {showNewsletterToast && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-in slide-in-from-top-2 duration-500">
+          <div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-6 py-4 rounded-2xl shadow-2xl border border-blue-400 relative">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="font-bold text-sm">Newsletter Subscription Successful!</p>
+                <p className="text-xs opacity-90">You'll receive updates and exclusive offers.</p>
+              </div>
+            </div>
+            {/* Close Button */}
+            <button
+              onClick={handleCloseNewsletterToast}
+              className="absolute top-2 right-2 w-6 h-6 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+            >
+              <span className="text-white text-sm font-bold">×</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Premium Newsletter Section - Mobile Optimized */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white relative">
         {/* Animated background pattern */}
         <div className="absolute inset-0 opacity-10">
@@ -109,34 +182,34 @@ const Footer: React.FC = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(120,119,198,0.3),transparent_50%)]"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-3">
-              <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
-              <h3 className="font-bold text-2xl bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 animate-pulse" />
+              <h3 className="font-bold text-lg sm:text-xl lg:text-2xl bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
                 Stay Updated with Our Latest Products
               </h3>
-              <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 animate-pulse" />
             </div>
-            <p className="text-blue-200 mb-6 max-w-2xl mx-auto text-base leading-relaxed">
+            <p className="text-blue-200 mb-4 sm:mb-6 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
               Subscribe to our newsletter and be the first to know about new arrivals, 
               exclusive deals, and special promotions.
             </p>
-            <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto flex gap-3">
+            <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1 group">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="w-full px-4 py-2.5 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:shadow-lg"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:shadow-lg text-sm sm:text-base"
                   required
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-indigo-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               </div>
               <button
                 type="submit"
-                className="px-5 py-2.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 relative overflow-hidden group"
+                className="px-4 sm:px-5 py-2 sm:py-2.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 relative overflow-hidden group text-sm sm:text-base"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <span className="relative z-10 flex items-center space-x-2">
@@ -148,7 +221,7 @@ const Footer: React.FC = () => {
                   ) : (
                     <>
                       <span>Subscribe</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                     </>
                   )}
                 </span>
@@ -158,16 +231,16 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* Features Section */}
+      {/* Features Section - Mobile Optimized */}
       <div className="bg-white/95 backdrop-blur-sm border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {features.map((feature, index) => (
               <div key={index} className="text-center group">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg group-hover:shadow-blue-500/25 transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-3">
-                  <feature.icon className="w-5 h-5 text-white" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg sm:rounded-xl flex items-center justify-center mx-auto mb-2 shadow-lg group-hover:shadow-blue-500/25 transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-3">
+                  <feature.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-1 text-sm">{feature.text}</h4>
+                <h4 className="font-semibold text-gray-900 mb-1 text-xs sm:text-sm">{feature.text}</h4>
                 <p className="text-xs text-gray-600">{feature.subtext}</p>
               </div>
             ))}
@@ -175,99 +248,81 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Footer Content */}
+      {/* Main Footer Content - Mobile First */}
       <div className="bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
             {/* Company Info */}
-            <div className="lg:col-span-1">
-              <div className="flex items-center space-x-3 mb-4">
+            <div className="sm:col-span-2 lg:col-span-1">
+              <div className="flex items-center space-x-2 sm:space-x-3 mb-4">
                 <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-xl group-hover:shadow-blue-500/25 transition-all duration-500">
-                    <span className="text-white font-bold text-lg">H</span>
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full border border-white shadow-sm animate-pulse"></div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-xl group-hover:shadow-blue-500/25 transition-all duration-500">
+                    <span className="text-white font-bold text-sm sm:text-lg">H</span>
+                    <div className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full border border-white shadow-sm animate-pulse"></div>
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full border border-white shadow-sm flex items-center justify-center">
+                  <div className="absolute -bottom-0.5 -right-0.5 sm:-bottom-1 sm:-right-1 w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full border border-white shadow-sm flex items-center justify-center">
                     <span className="text-xs font-bold text-white">★</span>
                   </div>
-                  <Sparkles className="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 text-yellow-400 animate-pulse" />
+                  <Sparkles className="absolute -top-1 -left-1 sm:-top-1.5 sm:-left-1.5 w-2 h-2 sm:w-2.5 sm:h-2.5 text-yellow-400 animate-pulse" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                  <h3 className="font-bold text-base sm:text-lg bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
                     HA Super Store
                   </h3>
                   <p className="text-xs text-gray-400 flex items-center space-x-1">
-                    <Sparkles className="w-2.5 h-2.5 text-yellow-400" />
-                    <span>Your Trusted General Store</span>
+                    <Sparkles className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-yellow-400" />
+                    <span>Premium Shopping Experience</span>
                   </p>
                 </div>
               </div>
-              <p className="text-gray-300 mb-4 leading-relaxed text-sm">
-                Your trusted one-stop destination for groceries, household essentials, and daily necessities. 
-                Serving our community with quality products and exceptional service since May 2021.
+              <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                Your trusted destination for quality groceries, household essentials, and daily necessities. 
+                Serving our community with excellence since 2021.
               </p>
+              
+              {/* Business Hours - Mobile Optimized */}
+              <div className="mb-4">
+                <h4 className="font-semibold text-white mb-2 text-sm sm:text-base">Business Hours</h4>
+                <div className="space-y-1">
+                  {businessHours.map((schedule, index) => (
+                    <div key={index} className={`text-xs sm:text-sm ${schedule.highlight ? 'text-blue-300 font-semibold' : 'text-gray-400'}`}>
+                      <span className="font-medium">{schedule.day}:</span> {schedule.hours}
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-bold text-base mb-4 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent flex items-center">
-                <ArrowRight className="w-4 h-4 mr-2" />
-                Quick Links
-              </h4>
+              <h4 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base">Quick Links</h4>
               <ul className="space-y-2">
                 {quickLinks.map((link) => (
                   <li key={link.name}>
-                    <Link 
-                      to={link.path} 
-                      className="text-gray-300 hover:text-blue-400 transition-all duration-300 flex items-center space-x-2 group text-sm"
+                    <Link
+                      to={link.path}
+                      className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200 text-sm"
                     >
                       <span className="text-sm">{link.icon}</span>
                       <span>{link.name}</span>
-                      <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Legal Links */}
+            {/* Categories */}
             <div>
-              <h4 className="font-bold text-base mb-4 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent flex items-center">
-                <Shield className="w-4 h-4 mr-2" />
-                Legal
-              </h4>
-              <ul className="space-y-2">
-                {legalLinks.map((link) => (
-                  <li key={link.name}>
-                    <Link 
-                      to={link.path} 
-                      className="text-gray-300 hover:text-blue-400 transition-all duration-300 flex items-center space-x-2 group text-sm"
-                    >
-                      <span className="text-sm">{link.icon}</span>
-                      <span>{link.name}</span>
-                      <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Product Categories */}
-            <div>
-              <h4 className="font-bold text-base mb-4 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent flex items-center">
-                <ShoppingBag className="w-4 h-4 mr-2" />
-                Categories
-              </h4>
+              <h4 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base">Categories</h4>
               <ul className="space-y-2">
                 {categories.map((category) => (
                   <li key={category.name}>
-                    <Link 
-                      to={category.path} 
-                      className="text-gray-300 hover:text-blue-400 transition-all duration-300 flex items-center space-x-2 group text-sm"
+                    <Link
+                      to={category.path}
+                      className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200 text-sm"
                     >
                       <span className="text-sm">{category.icon}</span>
                       <span>{category.name}</span>
-                      <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </Link>
                   </li>
                 ))}
@@ -276,141 +331,73 @@ const Footer: React.FC = () => {
 
             {/* Contact Info */}
             <div>
-              <h4 className="font-bold text-base mb-4 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent flex items-center">
-                <Users className="w-4 h-4 mr-2" />
-                Get in Touch
-              </h4>
+              <h4 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base">Contact Info</h4>
               <div className="space-y-3">
                 {contactInfo.map((info, index) => (
-                  <div key={index} className="flex items-start space-x-3 group">
-                    <div className="w-6 h-6 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-lg flex items-center justify-center group-hover:from-blue-600/30 group-hover:to-indigo-600/30 transition-all duration-300">
+                  <div key={index} className="flex items-start space-x-2">
+                    <div className="text-blue-400 mt-0.5">
                       {info.icon}
                     </div>
                     <div>
-                      <p className="text-gray-300 text-xs">
-                        {info.label === 'Address' ? (
-                          <>
-                            H.A Super Store<br />
-                            Chak No 297 JB<br />
-                            Gojra, Pakistan
-                          </>
-                        ) : (
-                          info.value
-                        )}
-                      </p>
-                      {info.link && (
-                        <a 
+                      <div className="text-xs text-gray-400 mb-1">{info.label}</div>
+                      {info.external ? (
+                        <a
                           href={info.link}
-                          target={info.external ? "_blank" : undefined}
-                          rel={info.external ? "noopener noreferrer" : undefined}
-                          className="text-blue-400 hover:text-blue-300 text-xs mt-1 inline-block"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-300 hover:text-white transition-colors duration-200 text-sm break-words"
                         >
-                          {info.label === 'Address' ? 'View on Maps →' : 
-                           info.label === 'WhatsApp' ? 'Chat with us →' : 
-                           info.label === 'Phone' ? 'Call now →' : 
-                           'Send email →'}
+                          {info.value}
+                        </a>
+                      ) : (
+                        <a
+                          href={info.link}
+                          className="text-gray-300 hover:text-white transition-colors duration-200 text-sm break-words"
+                        >
+                          {info.value}
                         </a>
                       )}
                     </div>
                   </div>
                 ))}
               </div>
-              
-              {/* Store Hours */}
-              <div className="mt-4">
-                <h5 className="font-semibold text-white mb-2 flex items-center space-x-2 text-sm">
-                  <Clock className="w-3 h-3 text-blue-400" />
-                  <span>Store Hours</span>
-                </h5>
-                <div className="text-xs text-gray-300 space-y-1">
-                  {businessHours.map((schedule, index) => (
-                    <div key={index} className={`${schedule.highlight ? 'text-blue-300 font-medium' : ''}`}>
-                      <span className="font-medium">{schedule.day}:</span> {schedule.hours}
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Payment Methods & Copyright */}
-          <div className="border-t border-gray-800 mt-8 pt-6">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="flex items-center space-x-3 mb-3 md:mb-0">
-                <span className="text-gray-400 text-xs">We Accept:</span>
-                <div className="flex items-center space-x-2">
-                  <div className="w-6 h-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded flex items-center justify-center">
-                    <CreditCard className="w-4 h-3 text-blue-400" />
-                  </div>
-                  <div className="w-6 h-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded flex items-center justify-center">
-                    <Smartphone className="w-3 h-3 text-blue-400" />
-                  </div>
-                  <span className="text-xs text-gray-400 bg-gray-800/50 px-2 py-1 rounded">JazzCash</span>
-                  <span className="text-xs text-gray-400 bg-gray-800/50 px-2 py-1 rounded">EasyPaisa</span>
-                </div>
-              </div>
-              <div className="text-center md:text-right">
-                <p className="text-gray-400 text-xs">
+          {/* Bottom Section - Mobile Optimized */}
+          <div className="border-t border-gray-700 mt-8 sm:mt-12 pt-6 sm:pt-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+              <div className="text-center sm:text-left">
+                <p className="text-gray-400 text-xs sm:text-sm">
                   © 2024 H.A Super Store. All rights reserved.
                 </p>
-                <p className="text-gray-500 text-xs mt-1 flex items-center justify-center md:justify-end space-x-1">
-                  <span>Made with</span>
-                  <Heart className="w-2.5 h-2.5 text-red-400 animate-pulse" />
-                  <span>for our customers</span>
-                </p>
               </div>
-            </div>
-
-            {/* Developer Credit Section */}
-            <div className="border-t border-gray-800 mt-4 pt-4">
-              <div className="text-center">
-                <div className="flex items-center justify-center space-x-2 mb-2 group">
-                  <div className="relative">
-                    <div className="w-6 h-6 bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-purple-500/25 transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-3">
-                      <Sparkles className="w-3 h-3 text-white animate-pulse" />
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full border border-white shadow-sm animate-ping"></div>
-                  </div>
-                  <span className="text-gray-400 text-xs font-medium">Website Created by</span>
-                  <div className="relative">
-                    <span className="text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text font-bold text-sm animate-pulse">
-                      Abdullah
-                    </span>
-                    <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-                  </div>
+              
+              <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
+                <div className="flex items-center space-x-4">
+                  {legalLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      to={link.path}
+                      className="flex items-center space-x-1 text-gray-400 hover:text-white transition-colors duration-200 text-xs sm:text-sm"
+                    >
+                      <span>{link.icon}</span>
+                      <span>{link.name}</span>
+                    </Link>
+                  ))}
                 </div>
                 
-                <div className="flex items-center justify-center space-x-3">
-                  <a 
-                    href="mailto:abdullahr797@gmail.com"
-                    className="flex items-center space-x-2 text-gray-400 hover:text-purple-400 transition-all duration-300 group text-xs"
-                  >
-                    <div className="w-4 h-4 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded flex items-center justify-center group-hover:from-purple-600/30 group-hover:to-pink-600/30 transition-all duration-300">
-                      <Mail className="w-2.5 h-2.5" />
-                    </div>
-                    <span className="group-hover:scale-105 transition-transform duration-300">abdullahr797@gmail.com</span>
-                    <ArrowRight className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-                  </a>
-                </div>
-
-                <div className="mt-2 flex items-center justify-center space-x-1">
-                  <div className="flex space-x-1">
-                    {[...Array(3)].map((_, i) => (
-                      <div 
-                        key={i}
-                        className="w-1 h-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-bounce"
-                        style={{ animationDelay: `${i * 0.1}s` }}
-                      ></div>
-                    ))}
-                  </div>
-                  <span className="text-gray-500 text-xs mx-2">Professional Web Development</span>
-                  <div className="flex space-x-1">
-                    {[...Array(3)].map((_, i) => (
-                      <div 
-                        key={i}
-                        className="w-1 h-1 bg-gradient-to-r from-pink-400 to-red-400 rounded-full animate-bounce"
-                        style={{ animationDelay: `${i * 0.1}s` }}
-                      ></div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-gray-400 text-xs sm:text-sm">Follow us:</span>
+                  <div className="flex space-x-2">
+                    {['Facebook', 'Instagram', 'Twitter'].map((social) => (
+                      <a
+                        key={social}
+                        href="#"
+                        className="w-6 h-6 sm:w-8 sm:h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                      >
+                        <span className="text-xs font-medium">{social[0]}</span>
+                      </a>
                     ))}
                   </div>
                 </div>

@@ -7,13 +7,13 @@ const CategoriesPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
-      {/* Modern Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white overflow-hidden">
+      {/* Modern Hero Section - Mobile First */}
+      <section className="relative py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-full blur-2xl animate-pulse" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-0 left-0 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-gradient-to-br from-indigo-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 sm:w-64 h-48 sm:h-64 bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-full blur-2xl animate-pulse" style={{animationDelay: '4s'}}></div>
         </div>
         
         {/* Grid Pattern Overlay */}
@@ -26,70 +26,70 @@ const CategoriesPage: React.FC = () => {
         
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20">
-              <Package className="w-4 h-4" />
-              <span className="text-sm font-medium">Explore Our Categories</span>
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 sm:py-2 mb-4 sm:mb-6 border border-white/20">
+              <Package className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="text-xs sm:text-sm font-medium">Explore Our Categories</span>
             </div>
             
-            <h1 className="font-heading font-bold text-5xl sm:text-6xl lg:text-7xl mb-6 leading-tight">
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 sm:mb-6 leading-tight">
               Discover Our
               <span className="block text-transparent bg-gradient-to-r from-blue-300 via-indigo-300 to-purple-300 bg-clip-text">
                 Premium Categories
               </span>
             </h1>
             
-            <p className="text-xl sm:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-6 sm:mb-8 text-white/90 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed">
               From fresh groceries to household essentials, explore our carefully curated categories. 
               Each category is designed to meet your daily needs with quality products and exceptional service.
             </p>
             
-            {/* Stats Section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mt-12">
+            {/* Stats Section - Mobile Optimized */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-3xl sm:max-w-4xl mx-auto mt-8 sm:mt-12">
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-300 mb-1">{categories.length}</div>
-                <div className="text-sm text-white/70">Categories</div>
+                <div className="text-2xl sm:text-3xl font-bold text-blue-300 mb-1">{categories.length}</div>
+                <div className="text-xs sm:text-sm text-white/70">Categories</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-indigo-300 mb-1">100+</div>
-                <div className="text-sm text-white/70">Products</div>
+                <div className="text-2xl sm:text-3xl font-bold text-indigo-300 mb-1">100+</div>
+                <div className="text-xs sm:text-sm text-white/70">Products</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-300 mb-1">24/7</div>
-                <div className="text-sm text-white/70">Support</div>
+                <div className="text-2xl sm:text-3xl font-bold text-purple-300 mb-1">24/7</div>
+                <div className="text-xs sm:text-sm text-white/70">Support</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-pink-300 mb-1">100%</div>
-                <div className="text-sm text-white/70">Quality</div>
+                <div className="text-2xl sm:text-3xl font-bold text-pink-300 mb-1">100%</div>
+                <div className="text-xs sm:text-sm text-white/70">Quality</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      {/* Categories Section - Mobile First */}
+      <section className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-12">
-            <h2 className="font-heading font-bold text-3xl sm:text-4xl mb-4 text-gray-900">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4 text-gray-900">
               Browse Our Categories
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
               Click on any category to explore popular items, services, and contact us directly for orders
             </p>
           </div>
 
-          {/* Categories Grid - New Design */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Categories Grid - Mobile First Design */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {categories.map((cat, idx) => (
               <div
                 key={cat.name}
                 onClick={() => setSelected(cat)}
-                className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer transform hover:-translate-y-2 border border-gray-100"
+                className="group relative bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer transform hover:-translate-y-1 sm:hover:-translate-y-2 border border-gray-100"
                 style={{ animationDelay: `${idx * 0.1}s` }}
               >
                 {/* Category Image */}
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-48 sm:h-56 overflow-hidden">
                   <img
                     src={cat.image}
                     alt={cat.name}
@@ -98,28 +98,28 @@ const CategoriesPage: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                   
                   {/* Category Icon */}
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg">
-                    <span className="text-2xl">{cat.icon}</span>
+                  <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 shadow-lg">
+                    <span className="text-xl sm:text-2xl">{cat.icon}</span>
                   </div>
                   
                   {/* Popular Items Badge */}
-                  <div className="absolute top-4 right-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-2 sm:px-3 py-1 rounded-full text-xs font-semibold">
                     {cat.popularItems.length} Items
                   </div>
                 </div>
 
                 {/* Category Content */}
-                <div className="p-6">
-                  <h3 className="font-heading font-bold text-xl mb-2 text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                <div className="p-4 sm:p-6">
+                  <h3 className="font-heading font-bold text-lg sm:text-xl mb-2 text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
                     {cat.name}
                   </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
+                  <p className="text-gray-600 mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
                     {cat.description}
                   </p>
                   
                   {/* Popular Items Preview */}
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Popular Items:</h4>
+                  <div className="mb-3 sm:mb-4">
+                    <h4 className="text-xs sm:text-sm font-semibold text-gray-700 mb-2">Popular Items:</h4>
                     <div className="flex flex-wrap gap-1">
                       {cat.popularItems.slice(0, 3).map((item, i) => (
                         <span key={i} className="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs">
@@ -136,12 +136,12 @@ const CategoriesPage: React.FC = () => {
 
                   {/* Action Button */}
                   <div className="flex items-center justify-between">
-                    <span className="inline-flex items-center gap-2 text-blue-600 font-semibold text-sm group-hover:gap-3 transition-all duration-300">
-                      View Details <ArrowRight className="w-4 h-4" />
+                    <span className="inline-flex items-center gap-2 text-blue-600 font-semibold text-xs sm:text-sm group-hover:gap-3 transition-all duration-300">
+                      View Details <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                     </span>
                     <div className="flex items-center gap-1 text-yellow-500">
-                      <Star className="w-4 h-4 fill-current" />
-                      <span className="text-sm font-medium">4.8</span>
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-current" />
+                      <span className="text-xs sm:text-sm font-medium">4.8</span>
                     </div>
                   </div>
                 </div>
