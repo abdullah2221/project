@@ -1,7 +1,11 @@
 import React from 'react';
 import { FileText, Scale, Users, ShoppingBag, Truck, CreditCard, Shield, ArrowRight, Sparkles } from 'lucide-react';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 const TermsOfService: React.FC = () => {
+  // Use optimized scroll-to-top hook
+  useScrollToTop();
+
   const sections = [
     {
       icon: <Users className="w-6 h-6" />,

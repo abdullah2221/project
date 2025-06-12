@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { categories } from '../data/products';
 import { ArrowRight, X, Phone, MapPin, Clock, MessageCircle, Star, Package, Users, Truck, Shield } from 'lucide-react';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 const CategoriesPage: React.FC = () => {
   const [selected, setSelected] = useState<null | typeof categories[0]>(null);
+
+  // Use optimized scroll-to-top hook
+  useScrollToTop();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
@@ -39,14 +43,14 @@ const CategoriesPage: React.FC = () => {
             </h1>
             
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mb-6 sm:mb-8 text-white/90 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed">
-              From fresh groceries to household essentials, explore our carefully curated categories. 
+              From fresh groceries to household essentials, explore our carefully curated 20+ categories. 
               Each category is designed to meet your daily needs with quality products and exceptional service.
             </p>
             
             {/* Stats Section - Mobile Optimized */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-3xl sm:max-w-4xl mx-auto mt-8 sm:mt-12">
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-blue-300 mb-1">{categories.length}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-blue-300 mb-1">20+</div>
                 <div className="text-xs sm:text-sm text-white/70">Categories</div>
               </div>
               <div className="text-center">
@@ -75,7 +79,7 @@ const CategoriesPage: React.FC = () => {
               Browse Our Categories
             </h2>
             <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-              Click on any category to explore popular items, services, and contact us directly for orders
+              Explore our 20+ categories to discover popular items, services, and contact us directly for orders
             </p>
           </div>
 

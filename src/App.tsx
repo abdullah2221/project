@@ -1,8 +1,9 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect, useCallback } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import { scrollToTop as optimizedScrollToTop } from './utils/scrollUtils';
 
 // Lazy load components for better performance
 const Homepage = lazy(() => import('./pages/Homepage'));
@@ -11,6 +12,28 @@ const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+
+// Optimized ScrollToTop component with better performance
+const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation();
+
+  // Memoized scroll function to prevent unnecessary re-creations
+  const scrollToTop = useCallback(() => {
+    // Only scroll if we're not already at the top
+    if (window.scrollY > 0) {
+      optimizedScrollToTop('smooth');
+    }
+  }, []);
+
+  useEffect(() => {
+    // Only scroll if we're not already at the top
+    if (window.scrollY > 0) {
+      scrollToTop();
+    }
+  }, [pathname, scrollToTop]);
+
+  return null;
+};
 
 // Loading component for Suspense fallback
 const LoadingSpinner = () => (
@@ -29,6 +52,7 @@ const LoadingSpinner = () => (
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen bg-white">
         <Header />
         <main>

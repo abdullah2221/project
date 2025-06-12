@@ -12,6 +12,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { categories, featuredProducts } from '../data/products';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 // Type definitions
 interface Feature {
@@ -199,12 +200,15 @@ const Homepage: React.FC = () => {
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
+  // Scroll to top when component mounts
+  useScrollToTop();
+
   // Animate stats counter with optimized timing
   useEffect(() => {
     const timer = setTimeout(() => {
       setStats({
-        customers: 10000,
-        products: 5000,
+        customers: 1000,
+        products: 1000,
         years: 3,
         satisfaction: 99,
       });
@@ -616,7 +620,7 @@ const Homepage: React.FC = () => {
               className="inline-flex items-center px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 text-white font-bold rounded-xl sm:rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-2xl relative overflow-hidden group transform hover:-translate-y-1 text-sm sm:text-base lg:text-xl"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <span className="relative z-10">View All Categories</span>
+              <span className="relative z-10">Explore 20+ Categories</span>
               <ArrowRight className="ml-2 sm:ml-3 lg:ml-4 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 relative z-10 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 sm:group-hover:translate-x-2 transition-all duration-300" />
             </Link>
           </div>

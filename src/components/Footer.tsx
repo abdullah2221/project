@@ -103,12 +103,14 @@ const Footer: React.FC = () => {
   ];
 
   const categories = [
+    { name: '20+ Categories Available', path: '/categories', icon: '🛍️' },
     { name: 'Staple Foods', path: '/categories', icon: '🌾' },
     { name: 'Beverages', path: '/categories', icon: '🥤' },
     { name: 'Snacks & Namkeen', path: '/categories', icon: '🍿' },
     { name: 'Dairy', path: '/categories', icon: '🥛' },
     { name: 'Household & Cleaning', path: '/categories', icon: '🧽' },
-    { name: 'Personal Care & Health', path: '/categories', icon: '🧴' }
+    { name: 'Personal Care & Health', path: '/categories', icon: '🧴' },
+    { name: 'View All Categories →', path: '/categories', icon: '📋' }
   ];
 
   const contactInfo = [

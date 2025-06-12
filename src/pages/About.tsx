@@ -1,31 +1,29 @@
 import React from 'react';
-import { Users, Award, Heart, Clock, Store, Zap, Shield, Mail, Phone, MessageCircle, Calendar, Star, Truck, CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { Users, Award, Heart, Clock, Store, Zap, Shield, Mail, Phone, MessageCircle, Calendar, Star, Truck, CheckCircle, ArrowRight, Sparkles, Crown, Building2, Target, TrendingUp } from 'lucide-react';
+import teamImage from '../assets/images/team.jpeg';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 const About: React.FC = () => {
+  // Use optimized scroll-to-top hook
+  useScrollToTop();
+
   const teamMembers = [
     {
-      name: "Hassan Ali",
-      role: "Founder & CEO",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      description: "With over 20 years in retail, Hassan founded H.A Super Store with a vision to create a one-stop shop for all customer needs."
-    },
-    {
-      name: "Fatima Zahra",
-      role: "Store Manager",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop&crop=face",
-      description: "Fatima ensures our daily operations run smoothly and maintains our high standards of customer service and product quality."
-    },
-    {
-      name: "Muhammad Raza",
-      role: "Customer Relations",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      description: "Muhammad is dedicated to ensuring every customer has an exceptional shopping experience with personalized service."
-    },
-    {
-      name: "Aisha Bibi",
-      role: "Quality Control",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
-      description: "Aisha oversees product quality and ensures all items meet our high standards before reaching our customers."
+      name: "Ali Raza",
+      role: "Founder & Owner",
+      image: teamImage,
+      description: "With 15 years of experience in retail, Ali founded H.A Super Store with a vision to create a trusted destination for quality products and exceptional service.",
+      achievements: [
+        "15+ Years Retail Experience",
+        "Community Trust Builder",
+        "Quality Assurance Expert",
+        "Customer Service Champion"
+      ],
+      contact: {
+        phone: "+92 331 7590842",
+        email: "raza7590842@gmail.com",
+        whatsapp: "https://wa.me/923317590842"
+      }
     }
   ];
 
@@ -148,7 +146,7 @@ const About: React.FC = () => {
               <div className="flex items-center bg-white/10 backdrop-blur-md rounded-2xl px-6 py-4 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
                 <Star className="w-5 h-5 text-yellow-300 mr-3 group-hover:scale-110 transition-transform" />
                 <div>
-                  <div className="text-base font-semibold">10,000+</div>
+                  <div className="text-base font-semibold">1,000+</div>
                   <div className="text-xs text-gray-300">Happy Customers</div>
                 </div>
               </div>
@@ -604,106 +602,149 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Team Section - Mobile First */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-white relative overflow-hidden">
+      {/* Enhanced Team Section - Single Owner Focus */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 relative overflow-hidden">
         {/* Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 h-32 sm:w-48 sm:h-48 bg-gradient-to-r from-primary-100/30 to-blue-100/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-40 h-40 sm:w-56 sm:h-56 bg-gradient-to-r from-blue-100/20 to-indigo-100/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        </div>
+        <div className="absolute top-0 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-blue-200/20 rounded-full -translate-y-24 sm:-translate-y-48 translate-x-24 sm:translate-x-48 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-48 sm:w-96 h-48 sm:h-96 bg-indigo-200/20 rounded-full translate-y-24 sm:translate-y-48 -translate-x-24 sm:-translate-x-48 blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}
           <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center space-x-2 sm:space-x-3 mb-4 bg-primary-50/60 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-lg border border-primary-100/20">
-              <div className="flex space-x-1">
-                {[...Array(3)].map((_, i) => (
-                  <div 
-                    key={i}
-                    className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-gradient-to-r from-primary-500 to-blue-500 rounded-full animate-bounce"
-                    style={{ animationDelay: `${i * 0.2}s` }}
-                  ></div>
-                ))}
-              </div>
-              <span className="text-primary-600 font-bold text-xs sm:text-sm uppercase tracking-wider">Our Team</span>
-              <div className="flex space-x-1">
-                {[...Array(3)].map((_, i) => (
-                  <div 
-                    key={i}
-                    className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full animate-bounce"
-                    style={{ animationDelay: `${i * 0.2}s` }}
-                  ></div>
-                ))}
-              </div>
+            <div className="inline-flex items-center space-x-2 sm:space-x-3 mb-4 bg-gradient-to-r from-blue-100 to-indigo-100 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-lg border border-blue-200/20">
+              <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+              <span className="text-blue-600 font-bold text-xs sm:text-sm uppercase tracking-wider">Leadership</span>
+              <Crown className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" />
             </div>
 
             <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-neutral-900 mb-4 sm:mb-6 leading-tight">
-              Meet Our Team
+              Meet Our Founder
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed">
-              The dedicated people who make H.A Super Store special
+              The visionary leader behind H.A Super Store's success story
             </p>
           </div>
 
-          {/* Team Grid - Mobile First */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          {/* Single Owner Card - Compact & Professional Design */}
+          <div className="max-w-3xl mx-auto">
             {teamMembers.map((member, index) => (
-              <div key={index} className="bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 group border border-gray-100 hover:-translate-y-2">
-                <div className="relative overflow-hidden">
+              <div key={index} className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 group border border-gray-100">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
+                  {/* Image Section - Compact */}
+                  <div className="relative overflow-hidden h-64 md:h-full">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-48 sm:h-56 lg:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Decorative Elements */}
-                  <div className="absolute top-4 right-4 w-2 h-2 bg-gradient-to-r from-primary-400 to-blue-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-500"></div>
-                  <div className="absolute bottom-4 left-4 w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-500" style={{ animationDelay: '0.3s' }}></div>
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Owner Badge */}
+                    <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg">
+                      <Crown className="w-3 h-3 inline mr-1" />
+                      Owner
                 </div>
-                <div className="p-6 sm:p-8">
-                  <h3 className="font-heading font-semibold text-lg sm:text-xl lg:text-2xl mb-2 text-neutral-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary-600 group-hover:to-blue-600 group-hover:bg-clip-text transition-all duration-500">
+                  </div>
+                  
+                  {/* Content Section - Compact */}
+                  <div className="p-6 md:p-8 flex flex-col justify-center md:col-span-2">
+                    <div className="mb-4">
+                      <h3 className="font-heading font-bold text-xl sm:text-2xl mb-2 text-neutral-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-indigo-600 group-hover:bg-clip-text transition-all duration-300">
                     {member.name}
                   </h3>
-                  <p className="text-primary-600 font-medium mb-3 sm:mb-4 text-sm sm:text-base">{member.role}</p>
-                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base group-hover:text-gray-700 transition-colors duration-300">
+                      <p className="text-blue-600 font-semibold text-base mb-3 flex items-center">
+                        <Building2 className="w-4 h-4 mr-2" />
+                        {member.role}
+                      </p>
+                      <p className="text-gray-600 leading-relaxed text-sm mb-4">
                     {member.description}
                   </p>
+                </div>
+                    
+                    {/* Achievements - Compact Grid */}
+                    <div className="mb-6">
+                      <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-sm">
+                        <Target className="w-4 h-4 mr-2 text-blue-600" />
+                        Key Achievements
+                      </h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {member.achievements.map((achievement, idx) => (
+                          <div key={idx} className="flex items-center space-x-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-2 border border-blue-100">
+                            <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
+                            <span className="text-xs font-medium text-gray-700">{achievement}</span>
+              </div>
+            ))}
+                      </div>
+          </div>
+
+                    {/* Contact Information - Compact */}
+                    <div className="space-y-2">
+                      <h4 className="font-semibold text-gray-900 mb-2 flex items-center text-sm">
+                        <MessageCircle className="w-4 h-4 mr-2 text-blue-600" />
+                        Contact
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <a 
+                          href={`tel:${member.contact.phone}`}
+                          className="flex items-center space-x-2 p-2 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-300 group text-xs"
+                        >
+                          <Phone className="w-3 h-3 text-green-600 group-hover:scale-110 transition-transform" />
+                          <span className="font-medium text-gray-700 truncate">{member.contact.phone}</span>
+                        </a>
+                        <a 
+                          href={`mailto:${member.contact.email}`}
+                          className="flex items-center space-x-2 p-2 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-300 group text-xs"
+                        >
+                          <Mail className="w-3 h-3 text-blue-600 group-hover:scale-110 transition-transform" />
+                          <span className="font-medium text-gray-700 truncate">Email</span>
+                        </a>
+                        <a 
+                          href={member.contact.whatsapp}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center space-x-2 p-2 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-300 group text-xs"
+                        >
+                          <MessageCircle className="w-3 h-3 text-green-600 group-hover:scale-110 transition-transform" />
+                          <span className="font-medium text-gray-700">WhatsApp</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Team Summary */}
+          {/* Team Summary - Updated for Single Owner */}
           <div className="mt-12 sm:mt-16 lg:mt-20 text-center">
-            <div className="bg-gradient-to-r from-primary-50 to-blue-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl border border-primary-100/30 max-w-4xl mx-auto">
-              <div className="flex items-center justify-center space-x-2 sm:space-x-3 mb-4">
-                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-primary-500 to-blue-500 rounded-full animate-pulse"></div>
-                <span className="text-primary-600 font-semibold text-sm sm:text-base">Our Commitment</span>
-                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-8 sm:p-10 shadow-xl border border-blue-100/30 max-w-4xl mx-auto">
+              <div className="flex items-center justify-center space-x-2 sm:space-x-3 mb-6">
+                <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full animate-pulse"></div>
+                <span className="text-blue-600 font-semibold text-base sm:text-lg">Our Leadership</span>
+                <div className="w-3 h-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
               </div>
               
-              <h3 className="font-heading font-bold text-xl sm:text-2xl lg:text-3xl text-neutral-900 mb-4">
-                Dedicated to Your Satisfaction
+              <h3 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-neutral-900 mb-6">
+                Driven by Excellence
               </h3>
               
-              <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-6">
-                Our team is committed to providing you with the best shopping experience, 
-                ensuring quality products and exceptional service every time.
+              <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-8 max-w-3xl mx-auto">
+                Under Ali Raza's leadership, H.A Super Store has become a trusted name in the community, 
+                known for quality products, exceptional service, and unwavering commitment to customer satisfaction.
               </p>
               
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-6">
-                <div className="flex items-center space-x-2">
-                  <Users className="w-5 h-5 text-primary-500" />
-                  <span className="text-sm sm:text-base font-medium text-gray-700">Expert Team</span>
+              <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
+                <div className="flex items-center space-x-3">
+                  <Crown className="w-6 h-6 text-yellow-500" />
+                  <span className="text-base font-medium text-gray-700">Visionary Leadership</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Award className="w-5 h-5 text-yellow-500" />
-                  <span className="text-sm sm:text-base font-medium text-gray-700">Quality Service</span>
+                <div className="flex items-center space-x-3">
+                  <TrendingUp className="w-6 h-6 text-green-500" />
+                  <span className="text-base font-medium text-gray-700">Proven Success</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Heart className="w-5 h-5 text-red-500" />
-                  <span className="text-sm sm:text-base font-medium text-gray-700">Customer Focus</span>
+                <div className="flex items-center space-x-3">
+                  <Heart className="w-6 h-6 text-red-500" />
+                  <span className="text-base font-medium text-gray-700">Customer Focus</span>
                 </div>
               </div>
             </div>
@@ -754,11 +795,11 @@ const About: React.FC = () => {
           {/* Stats Grid - Mobile First */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-center">
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/20 group hover:bg-white/20 transition-all duration-500 hover:-translate-y-2">
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform duration-300">10,000+</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform duration-300">1,000+</div>
               <div className="text-primary-100 text-sm sm:text-base lg:text-lg">Happy Customers</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/20 group hover:bg-white/20 transition-all duration-500 hover:-translate-y-2">
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform duration-300">5,000+</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform duration-300">1,000+</div>
               <div className="text-primary-100 text-sm sm:text-base lg:text-lg">Products Available</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/20 group hover:bg-white/20 transition-all duration-500 hover:-translate-y-2">

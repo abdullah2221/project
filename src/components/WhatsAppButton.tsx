@@ -387,7 +387,7 @@ const WhatsAppButton: React.FC = () => {
                 isDarkMode ? 'text-gray-300' : 'text-gray-600'
               }`}>
                 <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
-                <span className="font-semibold">Response Time: Within 5 minutes</span>
+                <span className="font-semibold">Response Time: Within 20 minutes</span>
               </div>
               <div className={`flex items-center space-x-2 text-xs sm:text-sm ${
                 isDarkMode ? 'text-gray-300' : 'text-gray-600'

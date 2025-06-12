@@ -1,7 +1,11 @@
 import React from 'react';
 import { Shield, Lock, Eye, Database, Users, CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 const PrivacyPolicy: React.FC = () => {
+  // Use optimized scroll-to-top hook
+  useScrollToTop();
+
   const sections = [
     {
       icon: <Shield className="w-6 h-6" />,

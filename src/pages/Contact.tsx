@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Clock, ChevronDown, ChevronUp, MessageCircle, ArrowRight, Sparkles, CheckCircle, Star, Truck } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG, getContactFormParams } from '../config/emailjs';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,9 @@ const Contact: React.FC = () => {
   useEffect(() => {
     emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
   }, []);
+
+  // Use optimized scroll-to-top hook
+  useScrollToTop();
 
   // Show toast notification
   useEffect(() => {
@@ -92,18 +96,18 @@ const Contact: React.FC = () => {
       );
 
       if (response.status === 200) {
-        setSubmitStatus('success');
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: ''
-        });
-        
+      setSubmitStatus('success');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+      
         // Reset success message after 10 seconds
-        setTimeout(() => {
-          setSubmitStatus('idle');
+      setTimeout(() => {
+        setSubmitStatus('idle');
         }, 10000); // 10 seconds
       } else {
         setSubmitStatus('error');
@@ -161,9 +165,9 @@ const Contact: React.FC = () => {
     {
       icon: <MessageCircle className="w-6 h-6" />,
       title: "WhatsApp",
-      value: "Chat with us instantly",
+      value: "Chat with us",
       link: "https://wa.me/923317590842",
-      description: "Quick responses guaranteed",
+      description: "Response within 20 minutes",
       color: "from-green-500 to-green-600",
       featured: true,
       external: true
@@ -421,7 +425,7 @@ const Contact: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <div className="flex items-center space-x-3 text-gray-700">
                   <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="font-semibold">WhatsApp: Instant Response</span>
+                  <span className="font-semibold">WhatsApp: Within 20 minutes</span>
                   </div>
                 <div className="flex items-center space-x-3 text-gray-700">
                   <div className="w-3 h-3 bg-blue-500 rounded-full"></div>

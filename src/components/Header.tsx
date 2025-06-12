@@ -152,12 +152,14 @@ const Header: React.FC = () => {
       path: '/categories',
       icon: Package,
       dropdown: [
+        { name: '20+ Categories Available', icon: '🛍️', path: '/categories' },
         { name: 'Staple Foods', icon: '🌾', path: '/categories?category=staple-foods' },
         { name: 'Beverages', icon: '🥤', path: '/categories?category=beverages' },
         { name: 'Snacks & Namkeen', icon: '🍿', path: '/categories?category=snacks' },
         { name: 'Dairy & Eggs', icon: '🥛', path: '/categories?category=dairy' },
         { name: 'Household & Cleaning', icon: '🧽', path: '/categories?category=household' },
-        { name: 'Personal Care & Health', icon: '🧴', path: '/categories?category=personal-care' }
+        { name: 'Personal Care & Health', icon: '🧴', path: '/categories?category=personal-care' },
+        { name: 'View All Categories →', icon: '📋', path: '/categories' }
       ]
     },
     { 
