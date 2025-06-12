@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, ShoppingCart, Phone, Clock, Star, X, CheckCircle, Package, Truck, CreditCard, Shield, Sparkles, Zap, Moon, Sun, Volume2, VolumeX } from 'lucide-react';
+import { MessageCircle, ShoppingCart, Phone, Clock, Star, X, CheckCircle, Package, Truck, CreditCard, Shield, Sparkles, Zap, Volume2, VolumeX } from 'lucide-react';
 import soundEffects from '../utils/soundEffects';
 
 const WhatsAppButton: React.FC = () => {
@@ -8,14 +8,10 @@ const WhatsAppButton: React.FC = () => {
   const [showAttention, setShowAttention] = useState(false);
   const [popupPosition, setPopupPosition] = useState({ bottom: '128px', right: '24px' });
   const [isPositioning, setIsPositioning] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [currentAnimation, setCurrentAnimation] = useState('animate-slide-up');
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
-
-  // Global dark mode toggle
-  const [userTheme, setUserTheme] = useState<'system' | 'dark' | 'light'>('system');
 
   // Animation variations
   const animationVariations = [
@@ -106,21 +102,6 @@ const WhatsAppButton: React.FC = () => {
     }
   }, [isExpanded]);
 
-  // Apply theme to <html> root
-  useEffect(() => {
-    let theme = userTheme;
-    if (userTheme === 'system') {
-      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    document.documentElement.classList.remove('dark', 'light');
-    document.documentElement.classList.add(theme);
-    setIsDarkMode(theme === 'dark');
-  }, [userTheme]);
-
-  const handleThemeToggle = () => {
-    setUserTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
-
   const handleWhatsAppClick = async (option: string) => {
     const phoneNumber = "923317590842";
     let message = "";
@@ -193,9 +174,7 @@ const WhatsAppButton: React.FC = () => {
         {/* Main Button */}
         <button
           onClick={handleMainClick}
-          className={`relative bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:from-green-600 hover:via-green-700 hover:to-green-800 text-white rounded-full p-5 shadow-2xl transition-all duration-300 hover:scale-110 group border-2 ${
-            isDarkMode ? 'border-gray-600/30 shadow-green-500/25' : 'border-white/20'
-          } ${showAttention ? 'animate-bounce' : ''}`}
+          className={`relative bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:from-green-600 hover:via-green-700 hover:to-green-800 text-white rounded-full p-5 shadow-2xl transition-all duration-300 hover:scale-110 group border-2 border-white/20 ${showAttention ? 'animate-bounce' : ''}`}
           aria-label="Contact H.A Super Store on WhatsApp"
           ref={buttonRef}
         >
@@ -210,31 +189,23 @@ const WhatsAppButton: React.FC = () => {
           <MessageCircle className="w-7 h-7 group-hover:animate-bounce" />
           
           {/* Notification Badge */}
-          <div className={`absolute -top-3 -right-3 bg-red-500 text-white text-sm rounded-full w-8 h-8 flex items-center justify-center animate-pulse border-2 ${
-            isDarkMode ? 'border-gray-700' : 'border-white'
-          } shadow-lg`}>
+          <div className="absolute -top-3 -right-3 bg-red-500 text-white text-sm rounded-full w-8 h-8 flex items-center justify-center animate-pulse border-2 border-white shadow-lg">
             <span className="text-xs font-bold">!</span>
           </div>
           
           {/* Hover Tooltip */}
-          <div className={`absolute bottom-full right-0 mb-3 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-xl ${
-            isDarkMode ? 'bg-gray-800 text-gray-100 border border-gray-600' : 'bg-gray-900 text-white'
-          }`}>
+          <div className="absolute bottom-full right-0 mb-3 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-xl bg-gray-900 text-white">
             <div className="flex items-center space-x-2">
               <ShoppingCart className="w-4 h-4 text-green-400" />
               <span className="font-semibold">Place Order Now!</span>
             </div>
-            <div className={`absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent ${
-              isDarkMode ? 'border-t-gray-800' : 'border-t-gray-900'
-            }`}></div>
+            <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
           </div>
         </button>
 
         {/* Attention Banner */}
         {showAttention && (
-          <div className={`absolute bottom-full right-0 mb-4 w-72 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl p-4 shadow-2xl animate-slide-up border ${
-            isDarkMode ? 'border-gray-600' : 'border-green-400'
-          }`}>
+          <div className="absolute bottom-full right-0 mb-4 w-72 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl p-4 shadow-2xl animate-slide-up border border-green-400">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                 <ShoppingCart className="w-5 h-5" />
@@ -258,11 +229,7 @@ const WhatsAppButton: React.FC = () => {
       {isExpanded && (
         <div 
           ref={popupRef}
-          className={`fixed z-50 w-80 max-w-[90vw] rounded-2xl shadow-2xl border overflow-hidden max-h-[calc(100vh-120px)] overflow-y-auto transition-all duration-300 ${
-            isDarkMode 
-              ? 'bg-gray-900 border-gray-700 shadow-gray-900/50' 
-              : 'bg-white border-gray-100'
-          } ${
+          className={`fixed z-50 w-80 max-w-[90vw] rounded-2xl shadow-2xl border overflow-hidden max-h-[calc(100vh-120px)] overflow-y-auto transition-all duration-300 bg-white border-gray-100 ${
             isPositioning ? 'opacity-50 scale-95' : `opacity-100 scale-100 ${currentAnimation}`
           }`}
           style={{
@@ -272,12 +239,10 @@ const WhatsAppButton: React.FC = () => {
         >
           {/* Loading indicator */}
           {isPositioning && (
-            <div className={`absolute inset-0 backdrop-blur-sm flex items-center justify-center z-10 ${
-              isDarkMode ? 'bg-gray-900/80' : 'bg-white/80'
-            }`}>
+            <div className="absolute inset-0 backdrop-blur-sm flex items-center justify-center z-10 bg-white/80">
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-                <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Positioning...</span>
+                <span className="text-sm text-gray-600">Positioning...</span>
               </div>
             </div>
           )}
@@ -311,31 +276,13 @@ const WhatsAppButton: React.FC = () => {
                 <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
-
-            {/* Theme Toggle Button */}
-            <button
-              onClick={handleThemeToggle}
-              className={`ml-2 p-1 rounded-full border transition-colors duration-200 ${isDarkMode ? 'bg-gray-800 border-gray-700 text-yellow-300 hover:bg-gray-700' : 'bg-white border-gray-200 text-yellow-500 hover:bg-gray-100'}`}
-              aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-              title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
           </div>
 
           {/* Features with Enhanced Design */}
-          <div className={`p-3 sm:p-4 ${
-            isDarkMode 
-              ? 'bg-gradient-to-r from-gray-800/50 to-gray-700/50' 
-              : 'bg-gradient-to-r from-green-50 to-emerald-50/50'
-          }`}>
+          <div className="p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50/50">
             <div className="grid grid-cols-2 gap-2 sm:gap-3">
               {features.map((feature, index) => (
-                <div key={index} className={`flex items-center space-x-2 text-xs rounded-lg p-2 border ${
-                  isDarkMode 
-                    ? 'bg-gray-800/60 border-gray-600 text-gray-200' 
-                    : 'bg-white/60 border-gray-100 text-gray-700'
-                }`}>
+                <div key={index} className="flex items-center space-x-2 text-xs rounded-lg p-2 border bg-white/60 border-gray-100 text-gray-700">
                   <feature.icon className={`w-3 h-3 sm:w-4 sm:h-4 ${feature.color}`} />
                   <span className="font-medium text-xs">{feature.text}</span>
                 </div>
@@ -378,40 +325,24 @@ const WhatsAppButton: React.FC = () => {
             </div>
 
             {/* Contact Info - Enhanced */}
-            <div className={`rounded-xl p-3 sm:p-4 border ${
-              isDarkMode 
-                ? 'bg-gradient-to-r from-gray-800/50 to-gray-700/30 border-gray-600' 
-                : 'bg-gradient-to-r from-gray-50 to-blue-50/30 border-gray-100'
-            }`}>
-              <div className={`flex items-center space-x-2 text-xs sm:text-sm mb-2 ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
+            <div className="rounded-xl p-3 sm:p-4 border bg-gradient-to-r from-gray-50 to-blue-50/30 border-gray-100">
+              <div className="flex items-center space-x-2 text-xs sm:text-sm mb-2 text-gray-600">
                 <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
                 <span className="font-semibold">Response Time: Within 20 minutes</span>
               </div>
-              <div className={`flex items-center space-x-2 text-xs sm:text-sm ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
+              <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-600">
                 <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
                 <span className="font-semibold">Online Now - Ready to Help!</span>
               </div>
             </div>
 
             {/* Order Benefits - Enhanced */}
-            <div className={`rounded-xl p-3 sm:p-4 border ${
-              isDarkMode 
-                ? 'bg-gradient-to-r from-gray-800/50 to-gray-700/30 border-gray-600' 
-                : 'bg-gradient-to-r from-green-50 to-emerald-50/50 border-green-100'
-            }`}>
-              <h4 className={`font-bold text-xs sm:text-sm mb-2 sm:mb-3 flex items-center space-x-2 ${
-                isDarkMode ? 'text-green-300' : 'text-green-800'
-              }`}>
+            <div className="rounded-xl p-3 sm:p-4 border bg-gradient-to-r from-green-50 to-emerald-50/50 border-green-100">
+              <h4 className="font-bold text-xs sm:text-sm mb-2 sm:mb-3 flex items-center space-x-2 text-green-800">
                 <Package className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>Why Order via WhatsApp?</span>
               </h4>
-              <ul className={`text-xs space-y-1 sm:space-y-2 ${
-                isDarkMode ? 'text-green-200' : 'text-green-700'
-              }`}>
+              <ul className="text-xs space-y-1 sm:space-y-2 text-green-700">
                 <li className="flex items-center space-x-2">
                   <CheckCircle className="w-3 h-3 text-green-500" />
                   <span>Instant order confirmation</span>
