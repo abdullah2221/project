@@ -19,7 +19,14 @@ import {
   Heart,
   Users,
   ShoppingBag,
-  CheckCircle
+  CheckCircle,
+  Code,
+  Zap,
+  Palette,
+  Globe,
+  Github,
+  Linkedin,
+  ExternalLink
 } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG, getNewsletterParams } from '../config/emailjs';
@@ -403,6 +410,33 @@ const Footer: React.FC = () => {
                     ))}
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Developer Credit Section - Compact One-Liner */}
+          <div className="border-t border-gray-700 mt-6 sm:mt-8 pt-6 sm:pt-8">
+            <div className="text-center">
+              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-sm border border-gray-600/30 rounded-xl px-4 py-2 group hover:from-gray-700/50 hover:to-gray-600/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
+                <div className="relative">
+                  <Code className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors duration-300" />
+                  <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                </div>
+                <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-300">
+                  Crafted with ❤️ by
+                </span>
+                <span className="text-sm font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  Abdullah
+                </span>
+                <Zap className="w-3 h-3 text-yellow-400 animate-pulse" />
+                <span className="text-gray-400">•</span>
+                <a
+                  href="mailto:abdullahr797@gmail.com"
+                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors duration-300 flex items-center space-x-1 group/email"
+                >
+                  <Mail className="w-3 h-3" />
+                  <span>abdullahr797@gmail.com</span>
+                </a>
               </div>
             </div>
           </div>
